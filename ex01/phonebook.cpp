@@ -6,43 +6,28 @@
 /*   By: adegadri <adegadri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 18:01:41 by adegadri          #+#    #+#             */
-/*   Updated: 2022/05/23 16:59:16 by adegadri         ###   ########.fr       */
+/*   Updated: 2022/05/23 20:42:05 by adegadri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include <string>
-#include <stdlib.h>
-
-using namespace std;
 
 #include "phonebook.hpp"
 
-int	ft_strlen(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i])
-		i++;
-	return (i);
-}
-
 void	PhoneBook::print_firstname(int i)
 {
-	int	j;
+	unsigned long	j;
 	int	size;
 
 	j = 0;
 	size = 0;
 	std::cout << "|";
-	if (ft_strlen(this->contact[i].firstname) < 10)
+	//std::cout << this->contact[i].getfirstname().size() << std::endl;
+	if (this->contact[i].getfirstname().size() <= 10)
 	{
-		while (j <= ft_strlen(this->contact[i].firstname) - 1)
+		//std::cout << this->contact[i].getfirstname() << std::endl;
+		while (j <= this->contact[i].getfirstname().size() - 1)
 		{
-			std::cout << this->contact[i].firstname[j];
+			std::cout << this->contact[i].getfirstname()[j];//
 			j++;
 		}
 		while (j <= 10)
@@ -55,8 +40,8 @@ void	PhoneBook::print_firstname(int i)
 	{
 		while (j <= 10)
 		{
-			if (size < 10 && this->contact[i].firstname[j] != '\0')
-				std::cout << this->contact[i].firstname[j];
+			if (size < 10 && this->contact[i].getfirstname()[j] != '\0')
+				std::cout << this->contact[i].getfirstname()[j];
 			else
 			{
 				std::cout << ".";
@@ -72,16 +57,16 @@ void	PhoneBook::print_firstname(int i)
 
 void	PhoneBook::print_lastname(int i)
 {
-	int	j;
+	unsigned long	j;
 	int	size;
 
 	j = 0;
 	size = 0;
-	if (ft_strlen(this->contact[i].lastname) < 10)
+	if (this->contact[i].getlastname().size() < 10)
 	{
-		while (j <= ft_strlen(this->contact[i].lastname) - 1)
+		while (j <= this->contact[i].getlastname().size() - 1)
 		{
-			std::cout << this->contact[i].lastname[j];
+			std::cout << this->contact[i].getlastname()[j];
 			j++;
 		}
 		while (j <= 10)
@@ -94,8 +79,8 @@ void	PhoneBook::print_lastname(int i)
 	{
 		while (j <= 10)
 		{
-			if (size < 10 && this->contact[i].lastname[j] != '\0')
-				std::cout << this->contact[i].lastname[j];
+			if (size < 10 && this->contact[i].getlastname()[j] != '\0')
+				std::cout << this->contact[i].getlastname()[j];
 			else
 			{
 				std::cout << ".";
@@ -111,16 +96,16 @@ void	PhoneBook::print_lastname(int i)
 
 void	PhoneBook::print_nickname(int i)
 {
-	int	j;
+	unsigned long	j;
 	int	size;
 
 	j = 0;
 	size = 0;
-	if (ft_strlen(this->contact[i].nickname) < 10)
+	if (this->contact[i].getnickname().size() < 10)
 	{
-		while (j <= ft_strlen(this->contact[i].nickname) - 1)
+		while (j <= this->contact[i].getnickname().size() - 1)
 		{
-			std::cout << this->contact[i].nickname[j];
+			std::cout << this->contact[i].getnickname()[j];
 			j++;
 		}
 		while (j <= 10)
@@ -133,8 +118,8 @@ void	PhoneBook::print_nickname(int i)
 	{
 		while (j <= 10)
 		{
-			if (size < 10 && this->contact[i].nickname[j] != '\0')
-				std::cout << this->contact[i].nickname[j];
+			if (size < 10 && this->contact[i].getnickname()[j] != '\0')
+				std::cout << this->contact[i].getnickname()[j];
 			else
 			{
 				std::cout << ".";
@@ -151,28 +136,36 @@ void	PhoneBook::print_nickname(int i)
 int	PhoneBook::add(void)
 {
 	std::string tmp;
-
+	std::string str;
 
 	if (this->idcontact == 8)
 		this->idcontact = 0;
 	std::cout << "" << std::endl;
 	std::cout << "firstname : ";
-	std::cin >> this->contact[idcontact].firstname;
+	std::cin >> str;
+	this->contact[idcontact].Set_firstname(str);
 	std::cout << "lastname : ";
-	std::cin >> this->contact[idcontact].lastname;
+	std::cin >> str;
+	this->contact[idcontact].Set_lastname(str);
 	std::cout << "nickname : ";
-	std::cin >> this->contact[idcontact].nickname;
-	std::cout << "phone number : ";
-	std::cin >> tmp;
-	if (ft_strlen(tmp) <= 9)
-		this->contact[idcontact].phonenumber = std::atoi(tmp);
-	else
-	{
-		std::cout << "Wrong phonenumber " << std::endl;
-		this->contact[idcontact].phonenumber = 0;
-	} 
+	std::cin >> str;
+	this->contact[idcontact].Set_nickname(str);
+	while (1)
+	{	
+		std::cout << "phone number : ";
+		std::cin >> tmp;
+		this->contact[idcontact].Set_number(std::atoi(tmp.c_str()));
+		if (this->contact[idcontact].getnumber() != 0 && tmp.size() < 9)
+			break;
+		else
+		{
+			std::cout << "Wrong phonenumber " << std::endl;
+			this->contact[idcontact].Set_number(0);
+		}
+	}
 	std::cout << "darkest secret : ";
-	std::cin >> this->contact[idcontact].darkestsecret;
+	std::cin >> str;
+	this->contact[idcontact].Set_darksecret(str);
 	if (this->nbr < 8)
 		this->nbr++;
 	return (this->nbr);
@@ -198,14 +191,14 @@ void	PhoneBook::search(void)
 	if (this->idcontact >= index)
 	{
 		std::cout << index << std::endl;
-		std::cout << "Firstname :" << this->contact[index].firstname << std::endl;
-		std::cout << "Lastname :" << this->contact[index].lastname << std::endl;
-		std::cout << "Nickname :" << this->contact[index].nickname << std::endl;
-		if (this->contact[index].phonenumber != 0)
-			std::cout << "Phonenumber :+33" << this->contact[index].phonenumber << std::endl;
+		std::cout << "Firstname :" << this->contact[index].getfirstname() << std::endl;
+		std::cout << "Lastname :" << this->contact[index].getlastname() << std::endl;
+		std::cout << "Nickname :" << this->contact[index].getnickname() << std::endl;
+		if (this->contact[index].getnumber() != 0)
+			std::cout << "Phonenumber :+33" << this->contact[index].getnumber() << std::endl;
 		else
 			std::cout << "Phonenumber : incorrect number " << std::endl;
-		std::cout << "Darkest secret :" <<this->contact[index].darkestsecret << std::endl;
+		std::cout << "Darkest secret :" << this->contact[index].getdarksecret() << std::endl;
 	}
 	else
 	{
