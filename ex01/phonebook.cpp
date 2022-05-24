@@ -6,35 +6,53 @@
 /*   By: adegadri <adegadri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 18:01:41 by adegadri          #+#    #+#             */
-/*   Updated: 2022/05/23 20:42:05 by adegadri         ###   ########.fr       */
+/*   Updated: 2022/05/24 15:29:28 by adegadri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "phonebook.hpp"
 
+int	check_tmp(std::string str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 void	PhoneBook::print_firstname(int i)
 {
 	unsigned long	j;
+	unsigned long	k;
 	int	size;
+	unsigned long	len = 0;
 
 	j = 0;
+	k = 0;
 	size = 0;
 	std::cout << "|";
-	//std::cout << this->contact[i].getfirstname().size() << std::endl;
-	if (this->contact[i].getfirstname().size() <= 10)
+	len = this->contact[i].getfirstname().size();
+	if (len <= 10)
 	{
-		//std::cout << this->contact[i].getfirstname() << std::endl;
-		while (j <= this->contact[i].getfirstname().size() - 1)
-		{
-			std::cout << this->contact[i].getfirstname()[j];//
-			j++;
-		}
-		while (j <= 10)
+		while (j < (10 - len))
 		{
 			std::cout << " ";
 			j++;
 		}
+		while (j < 10)
+		{
+			std::cout << this->contact[i].getfirstname()[k];
+			k++;
+			j++;
+		}
+
 	}
 	else
 	{
@@ -58,22 +76,28 @@ void	PhoneBook::print_firstname(int i)
 void	PhoneBook::print_lastname(int i)
 {
 	unsigned long	j;
+	unsigned long	k;
+	unsigned long	len;
 	int	size;
 
 	j = 0;
+	k = 0;
 	size = 0;
-	if (this->contact[i].getlastname().size() < 10)
+	len = this->contact[i].getlastname().size();
+	if (len <= 10)
 	{
-		while (j <= this->contact[i].getlastname().size() - 1)
-		{
-			std::cout << this->contact[i].getlastname()[j];
-			j++;
-		}
-		while (j <= 10)
+		while (j < (10 - len))
 		{
 			std::cout << " ";
 			j++;
 		}
+		while (j < 10)
+		{
+			std::cout << this->contact[i].getlastname()[k];
+			k++;
+			j++;
+		}
+
 	}
 	else
 	{
@@ -97,22 +121,28 @@ void	PhoneBook::print_lastname(int i)
 void	PhoneBook::print_nickname(int i)
 {
 	unsigned long	j;
+	unsigned long	k;
+	unsigned long	len;
 	int	size;
 
 	j = 0;
+	k = 0;
 	size = 0;
-	if (this->contact[i].getnickname().size() < 10)
+	len = this->contact[i].getnickname().size();
+	if (len <= 10)
 	{
-		while (j <= this->contact[i].getnickname().size() - 1)
-		{
-			std::cout << this->contact[i].getnickname()[j];
-			j++;
-		}
-		while (j <= 10)
+		while (j < (10 - len))
 		{
 			std::cout << " ";
 			j++;
 		}
+		while (j < 10)
+		{
+			std::cout << this->contact[i].getnickname()[k];
+			k++;
+			j++;
+		}
+
 	}
 	else
 	{
@@ -142,20 +172,23 @@ int	PhoneBook::add(void)
 		this->idcontact = 0;
 	std::cout << "" << std::endl;
 	std::cout << "firstname : ";
-	std::cin >> str;
+	getline(std::cin, str);
 	this->contact[idcontact].Set_firstname(str);
 	std::cout << "lastname : ";
-	std::cin >> str;
+	getline(std::cin, str);
 	this->contact[idcontact].Set_lastname(str);
 	std::cout << "nickname : ";
-	std::cin >> str;
+	getline(std::cin, str);
 	this->contact[idcontact].Set_nickname(str);
+	std::cout << "darkest secret : ";
+	getline(std::cin, str);
+	this->contact[idcontact].Set_darksecret(str);
 	while (1)
 	{	
 		std::cout << "phone number : ";
 		std::cin >> tmp;
 		this->contact[idcontact].Set_number(std::atoi(tmp.c_str()));
-		if (this->contact[idcontact].getnumber() != 0 && tmp.size() < 9)
+		if (this->contact[idcontact].getnumber() != 0 && tmp.size() < 9 && !check_tmp(tmp))
 			break;
 		else
 		{
@@ -163,9 +196,6 @@ int	PhoneBook::add(void)
 			this->contact[idcontact].Set_number(0);
 		}
 	}
-	std::cout << "darkest secret : ";
-	std::cin >> str;
-	this->contact[idcontact].Set_darksecret(str);
 	if (this->nbr < 8)
 		this->nbr++;
 	return (this->nbr);
