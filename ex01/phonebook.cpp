@@ -6,7 +6,7 @@
 /*   By: adegadri <adegadri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 18:01:41 by adegadri          #+#    #+#             */
-/*   Updated: 2022/05/24 15:29:28 by adegadri         ###   ########.fr       */
+/*   Updated: 2022/05/24 15:44:12 by adegadri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,6 +207,11 @@ void	PhoneBook::search(void)
 	int	index;
 
 	i = 0;
+	if (this->nbr == 0)
+	{
+		std::cout << "No phonebook" << std::endl;
+		return;
+	}
 	while (i <= this->nbr - 1)
 	{
 		std::cout << "|";
@@ -218,7 +223,8 @@ void	PhoneBook::search(void)
 	}
 	std::cout << "Index ?";
 	std::cin >> index;
-	if (this->idcontact >= index)
+	std::cout << index << this->nbr << this->idcontact << std::endl;
+	if (index < this->nbr)
 	{
 		std::cout << index << std::endl;
 		std::cout << "Firstname :" << this->contact[index].getfirstname() << std::endl;
